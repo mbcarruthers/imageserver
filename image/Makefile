@@ -36,7 +36,7 @@ DEFAULT_GOAL := help
 .PHONY: imageserver
 project := imageserver
 
-image: $@help ## Keep this to display help when you just type 'make' in root dir
+image: $@help # Keep this to display help when you just type 'make' in root dir
 
 build_server: ## build the golang http server
 	go build -o ${BIN_DIR}/$(project) ./cmd/

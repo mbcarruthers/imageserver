@@ -5,7 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
 )
 
 const (
@@ -17,6 +19,7 @@ var (
 )
 
 type ImageFunc func(w http.ResponseWriter, r *http.Request)
+
 type ImageHandler struct {
 	*http.ServeMux
 }
@@ -52,7 +55,6 @@ func CreateImageFileMap(directoryname string) map[string]ImageFunc {
 		return nil
 	}
 	for _, item := range items {
-		log.Printf("%s \n", item)
 		urlPath := "/" + item.Name()
 		filemap[urlPath] = ServeImage(item.Name())
 	}
@@ -64,7 +66,7 @@ func main() {
 	imageHandle := NewImageHandler()
 
 	for k, v := range imageMap {
-		log.Printf("%+v \n %+v \n", k, v)
+
 		imageHandle.HandleFunc(k, v)
 	}
 	server := &http.Server{
@@ -78,5 +80,9 @@ func main() {
 				err.Error())
 		}
 	}()
+	quit := make(chan os.Signal)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+	<-quit
 	log.Println("image server closed.")
 }
