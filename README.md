@@ -12,4 +12,4 @@ Todo: Test Image formats and look into setting the w.Header() for images.
 Look into seeing if it would be possible to only accept certain formats. May in 
 the admin UI or something. 
 
-See if this type of thing would be compatable with Lura.
+See if this type of thing would be compatible with Lura.
